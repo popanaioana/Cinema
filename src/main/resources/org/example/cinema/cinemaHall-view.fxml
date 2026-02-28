@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.cinema.cinemaHallController"
+            prefWidth="1000" prefHeight="750"
+            style="-fx-background-color: #2b2b2b;">
+    <top>
+        <Label text="Select your seat"
+               BorderPane.alignment="CENTER"
+               style="-fx-text-fill: #ecf0f1;
+              -fx-font-size: 24px;
+              -fx-font-weight: bold;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </Label>
+    </top>
+    <center>
+        <VBox spacing="15" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="SCREEN HERE"
+                   style="-fx-text-fill: #bdc3c7;
+                          -fx-font-size: 14px;
+                          -fx-font-weight: bold;
+                          -fx-border-color: #7f8c8d;
+                          -fx-border-width: 2;
+                          -fx-padding: 10 200 10 200;"/>
+            <GridPane fx:id="seatsGrid"
+                      hgap="10" vgap="10"
+                      alignment="CENTER">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+            </GridPane>
+        </VBox>
+    </center>
+    <right>
+        <VBox spacing="20"
+              alignment="TOP_CENTER"
+              prefWidth="250"
+              style="-fx-background-color: #1e1e1e;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Selected seat:"
+                   style="-fx-text-fill: #ecf0f1; -fx-font-size: 16px;"/>
+
+            <Label fx:id="selectedSeatLabel"
+                   text="-"
+                   style="-fx-text-fill: #f1c40f; -fx-font-size: 18px;"/>
+
+            <Label text="Price:"
+                   style="-fx-text-fill: #ecf0f1; -fx-font-size: 16px;"/>
+
+            <Label fx:id="priceLabel"
+                   text="0 RON"
+                   style="-fx-text-fill: #2ecc71; -fx-font-size: 18px;"/>
+
+            <Button text="Reserve"
+                    fx:id="reserveButton"
+                    prefWidth="180" prefHeight="45"
+                    style="-fx-background-color: #FFD700;
+                           -fx-text-fill: #2b2b2b;
+                           -fx-font-size: 16px;"
+                    onAction="#handleReservation"/>
+
+            <Label text="In order to edit your reservation, enter your reservationID and select your new seat"
+                    wrapText="true"
+                    style="-fx-text-fill: #ecf0f1; -fx-font-size: 12px;"/>
+
+            <TextField fx:id="reservationIDField" promptText="reservationID" maxWidth="100"/>
+
+            <Button text="Edit"
+                    fx:id="editButton"
+                    prefWidth="180" prefHeight="45"
+                    style="-fx-background-color: #FFD700;
+                           -fx-text-fill: #2b2b2b;
+                           -fx-font-size: 16px;"
+                    onAction="#handleUpdate"/>
+        </VBox>
+    </right>
+
+</BorderPane>
