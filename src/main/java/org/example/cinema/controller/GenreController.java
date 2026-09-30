@@ -6,18 +6,18 @@ import org.example.cinema.service.GenreService;
 import java.util.List;
 
 public class GenreController {
-    private GenreService genreService;
+    private final GenreService genreService;
 
     public GenreController(GenreService genreService) {
         this.genreService = genreService;
     }
 
-    public List<Genre> handleGetGenres(){
+    public List<Genre> handleGetGenres() {
         return genreService.getGenres();
     }
 
-    public List<Genre> handleGetGenre(int movieID){
-        return genreService.getGenre(movieID);
+    public List<Genre> handleGetGenres(int movieID) {
+        return genreService.getGenres(movieID);
     }
 
     public String handleGetGenreNameByID(int genreID) {

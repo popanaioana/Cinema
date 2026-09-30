@@ -1,19 +1,19 @@
 package org.example.cinema.domain;
 
 public class Format {
-    private int FormatID;
-    private String TypeFormat;
+    private int formatID;
+    private String typeFormat;
 
     public Format(int formatID, String typeFormat) {
-        this.FormatID = formatID;
-        this.TypeFormat = typeFormat;
-    }
-
-    public String getTypeFormat() {
-        return TypeFormat;
+        this.formatID = formatID;
+        this.typeFormat = typeFormat;
     }
 
     public int getFormatID() {
-        return FormatID;
+        return formatID;
+    }
+
+    public String getTypeFormat() {
+        return typeFormat;
     }
 }

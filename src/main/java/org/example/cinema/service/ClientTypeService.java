@@ -1,23 +1,22 @@
 package org.example.cinema.service;
 
-import org.example.cinema.controller.ClientTypeController;
 import org.example.cinema.domain.ClientType;
-import org.example.cinema.repository.db.ClientTypeDBRepository;
+import org.example.cinema.repository.interfaces.IClientTypeRepository;
 
 import java.util.List;
 
 public class ClientTypeService {
-    private ClientTypeDBRepository clientTypeDBRepository;
+    private final IClientTypeRepository clientTypeRepository;
 
-    public ClientTypeService(ClientTypeDBRepository clientTypeDBRepository) {
-        this.clientTypeDBRepository = clientTypeDBRepository;
+    public ClientTypeService(IClientTypeRepository clientTypeRepository) {
+        this.clientTypeRepository = clientTypeRepository;
     }
 
     public List<ClientType> getClientTypes() {
-        return clientTypeDBRepository.getClientTypes();
+        return clientTypeRepository.getClientTypes();
     }
 
     public ClientType getClientType(String typeName) {
-        return clientTypeDBRepository.getClientType(typeName);
+        return clientTypeRepository.getClientType(typeName);
     }
 }

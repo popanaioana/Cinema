@@ -2,7 +2,7 @@ package org.example.cinema.service;
 
 import org.example.cinema.domain.Client;
 import org.example.cinema.domain.Users;
-import org.example.cinema.repository.db.UsersDBRepository;
+import org.example.cinema.repository.interfaces.IUsersRepository;
 import org.example.cinema.validators.ClientValidator;
 import org.example.cinema.validators.UsersValidator;
 
@@ -10,11 +10,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UsersService {
-    private UsersDBRepository usersRepository;
-    private UsersValidator usersValidator;
-    private ClientValidator clientValidator;
+    private final IUsersRepository usersRepository;
+    private final UsersValidator usersValidator;
+    private final ClientValidator clientValidator;
 
-    public UsersService(UsersDBRepository usersRepository, UsersValidator usersValidator, ClientValidator clientValidator) {
+    public UsersService(IUsersRepository usersRepository, UsersValidator usersValidator, ClientValidator clientValidator) {
         this.usersRepository = usersRepository;
         this.usersValidator = usersValidator;
         this.clientValidator = clientValidator;
@@ -33,12 +33,20 @@ public class UsersService {
     }
 
     public void addUser(Users user) throws SQLException {
-        clientValidator.validate(((Client)user));
+        if (user instanceof Client client) {
+            clientValidator.validate(client);
+        } else {
+            usersValidator.validate(user);
+        }
         usersRepository.addUser(user);
     }
 
     public void updateUser(Users user) {
-        usersValidator.validate(user);
+        if (user instanceof Client client) {
+            clientValidator.validate(client);
+        } else {
+            usersValidator.validate(user);
+        }
         usersRepository.updateUser(user);
     }
 

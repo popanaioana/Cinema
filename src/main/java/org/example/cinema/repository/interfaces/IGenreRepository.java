@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IGenreRepository {
     List<Genre> getGenres();
-    public List<Genre> getGenres(int movieID);
-    public String getGenreNameByID(int genreID);
-    public int getGenreID(String genre);
+    List<Genre> getGenres(int movieID);
+    String getGenreNameByID(int genreID);
+    int getGenreID(String genre);
 }

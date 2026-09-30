@@ -1,55 +1,54 @@
 package org.example.cinema.domain;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Screening {
-    private int ScreeningID;
-    private int MovieID;
-    private int CinemaHallID;
-    private int TypeID;
-    private LocalDate DateScreening;
-    private LocalTime TimeScreening;
+    private int screeningID;
+    private int movieID;
+    private int cinemaHallID;
+    private int typeID;
+    private LocalDate dateScreening;
+    private LocalTime timeScreening;
 
-    public Screening(int MovieID, int CinemaHallID, int TypeID, LocalDate DateScreening, LocalTime TimeScreening) {
-        this.MovieID = MovieID;
-        this.CinemaHallID = CinemaHallID;
-        this.TypeID = TypeID;
-        this.DateScreening = DateScreening;
-        this.TimeScreening = TimeScreening;
+    public Screening(int movieID, int cinemaHallID, int typeID, LocalDate dateScreening, LocalTime timeScreening) {
+        this.movieID = movieID;
+        this.cinemaHallID = cinemaHallID;
+        this.typeID = typeID;
+        this.dateScreening = dateScreening;
+        this.timeScreening = timeScreening;
     }
 
-    public Screening(int ScreeningID, int MovieID, int CinemaHallID, int TypeID, LocalDate DateScreening, LocalTime TimeScreening) {
-        this.ScreeningID = ScreeningID;
-        this.MovieID = MovieID;
-        this.CinemaHallID = CinemaHallID;
-        this.TypeID = TypeID;
-        this.DateScreening = DateScreening;
-        this.TimeScreening = TimeScreening;
+    public Screening(int screeningID, int movieID, int cinemaHallID, int typeID, LocalDate dateScreening, LocalTime timeScreening) {
+        this.screeningID = screeningID;
+        this.movieID = movieID;
+        this.cinemaHallID = cinemaHallID;
+        this.typeID = typeID;
+        this.dateScreening = dateScreening;
+        this.timeScreening = timeScreening;
     }
 
     public int getScreeningID() {
-        return ScreeningID;
+        return screeningID;
     }
 
     public int getMovieID() {
-        return MovieID;
+        return movieID;
     }
 
     public int getCinemaHallID() {
-        return CinemaHallID;
+        return cinemaHallID;
     }
 
     public int getTypeID() {
-        return TypeID;
+        return typeID;
     }
 
     public LocalDate getDateScreening() {
-        return DateScreening;
+        return dateScreening;
     }
 
     public LocalTime getTimeScreening() {
-        return TimeScreening;
+        return timeScreening;
     }
 }

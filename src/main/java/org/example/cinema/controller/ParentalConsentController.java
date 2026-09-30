@@ -6,7 +6,7 @@ import org.example.cinema.service.ParentalConsentService;
 import java.util.List;
 
 public class ParentalConsentController {
-    private ParentalConsentService parentalConsentService;
+    private final ParentalConsentService parentalConsentService;
 
     public ParentalConsentController(ParentalConsentService parentalConsentService) {
         this.parentalConsentService = parentalConsentService;

@@ -1,29 +1,28 @@
 package org.example.cinema.domain;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-public class AdminCinema extends Users{
-    private double Salary;
-    private LocalDate DateOfEmployement;
+public class AdminCinema extends Users {
+    private double salary;
+    private LocalDate dateOfEmployment;
 
-    public AdminCinema(String FirstName, String LastName, String Email, String PhoneNumber, LocalDate DateOfBirth, String UserName, String UserPassword, double Salary, LocalDate DateOfEmployement) {
-        super(FirstName, LastName, Email, PhoneNumber, DateOfBirth, UserName, UserPassword);
-        this.Salary = Salary;
-        this.DateOfEmployement = DateOfEmployement;
+    public AdminCinema(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword, double salary, LocalDate dateOfEmployment) {
+        super(firstName, lastName, email, phoneNumber, dateOfBirth, userName, userPassword);
+        this.salary = salary;
+        this.dateOfEmployment = dateOfEmployment;
     }
 
-    public AdminCinema(int UserID, String FirstName, String LastName, String Email, String PhoneNumber, LocalDate DateOfBirth, String UserName, String UserPassword, double Salary, LocalDate DateOfEmployement) {
-        super(UserID, FirstName, LastName, Email, PhoneNumber, DateOfBirth, UserName, UserPassword);
-        this.Salary = Salary;
-        this.DateOfEmployement = DateOfEmployement;
+    public AdminCinema(int userID, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword, double salary, LocalDate dateOfEmployment) {
+        super(userID, firstName, lastName, email, phoneNumber, dateOfBirth, userName, userPassword);
+        this.salary = salary;
+        this.dateOfEmployment = dateOfEmployment;
     }
 
     public double getSalary() {
-        return Salary;
+        return salary;
     }
 
     public LocalDate getDateOfEmployment() {
-        return DateOfEmployement;
+        return dateOfEmployment;
     }
 }

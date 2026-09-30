@@ -1,19 +1,20 @@
 package org.example.cinema.domain;
 
 public class ScreeningType {
-    private int TypeID;
-    private String TypeName;
 
-    public ScreeningType(int TypeID, String TypeName) {
-        this.TypeID = TypeID;
-        this.TypeName = TypeName;
-    }
+    private int typeID;
+    private String typeName;
 
-    public String getTypeName() {
-        return TypeName;
+    public ScreeningType(int typeID, String typeName) {
+        this.typeID = typeID;
+        this.typeName = typeName;
     }
 
     public int getScreeningTypeID() {
-        return TypeID;
+        return typeID;
+    }
+
+    public String getTypeName() {
+        return typeName;
     }
 }

@@ -3,69 +3,69 @@ package org.example.cinema.domain;
 import java.time.LocalDate;
 
 public abstract class Users {
-    private int UserID;
-    private String FirstName;
-    private String LastName;
-    private String Email;
-    private String PhoneNumber;
-    private LocalDate DateOfBirth;
-    private String UserName;
-    private String UserPassword;
+    private int userID;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
+    private LocalDate dateOfBirth;
+    private String userName;
+    private String userPassword;
 
-    public Users(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String password) {
-        this.FirstName = firstName;
-        this.LastName = lastName;
-        this.Email = email;
-        this.PhoneNumber = phoneNumber;
-        this.DateOfBirth = dateOfBirth;
-        this.UserName = userName;
-        this.UserPassword = password;
+    public Users(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.userName = userName;
+        this.userPassword = userPassword;
     }
 
-    public Users(int UserID, String FirstName, String LastName, String Email, String PhoneNumber, LocalDate DateOfBirth, String UserName, String UserPassword) {
-        this.UserID = UserID;
-        this.FirstName = FirstName;
-        this.LastName = LastName;
-        this.Email = Email;
-        this.PhoneNumber = PhoneNumber;
-        this.DateOfBirth = DateOfBirth;
-        this.UserName = UserName;
-        this.UserPassword = UserPassword;
+    public Users(int userID, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.userName = userName;
+        this.userPassword = userPassword;
     }
 
     public int getUserID() {
-        return UserID;
+        return userID;
     }
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return phoneNumber;
     }
 
     public LocalDate getDateOfBirth() {
-        return DateOfBirth;
+        return dateOfBirth;
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public String getUserPassword() {
-        return UserPassword;
+        return userPassword;
     }
 
-    public void setUserID(int generatedId) {
-        this.UserID = generatedId;
+    public void setUserID(int generatedID) {
+        this.userID = generatedID;
     }
 }

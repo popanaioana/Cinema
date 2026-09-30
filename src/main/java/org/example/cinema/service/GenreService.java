@@ -1,14 +1,14 @@
 package org.example.cinema.service;
 
 import org.example.cinema.domain.Genre;
-import org.example.cinema.repository.db.GenreDBRepository;
+import org.example.cinema.repository.interfaces.IGenreRepository;
 
 import java.util.List;
 
 public class GenreService {
-    private GenreDBRepository genreRepository;
+    private final IGenreRepository genreRepository;
 
-    public GenreService(GenreDBRepository genreRepository) {
+    public GenreService(IGenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
 
@@ -16,7 +16,7 @@ public class GenreService {
         return genreRepository.getGenres();
     }
 
-    public List<Genre> getGenre(int movieID) {
+    public List<Genre> getGenres(int movieID) {
         return genreRepository.getGenres(movieID);
     }
 

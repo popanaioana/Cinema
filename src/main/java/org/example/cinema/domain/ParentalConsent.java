@@ -1,19 +1,19 @@
 package org.example.cinema.domain;
 
 public class ParentalConsent {
-    private int ParentalConsentID;
-    private int Age;
+    private int parentalConsentID;
+    private int age;
 
     public ParentalConsent(int parentalConsentID, int age) {
-        this.ParentalConsentID = parentalConsentID;
-        this.Age = age;
-    }
-
-    public int getAge() {
-        return Age;
+        this.parentalConsentID = parentalConsentID;
+        this.age = age;
     }
 
     public int getParentalConsentID() {
-        return ParentalConsentID;
+        return parentalConsentID;
+    }
+
+    public int getAge() {
+        return age;
     }
 }

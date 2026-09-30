@@ -1,59 +1,59 @@
 package org.example.cinema.domain;
 
 public class Reservations {
-    private int ReservationID;
-    private int ClientID;
-    private int ScreeningID;
-    private int PriceID;
-    private int RowReservation;
-    private int ColumnReservation;
+    private int reservationID;
+    private int clientID;
+    private int screeningID;
+    private int priceID;
+    private int rowReservation;
+    private int columnReservation;
 
-    public Reservations(int ClientID, int ScreeningID, int PriceID, int RowReservation, int ColumnReservation) {
-        this.ClientID = ClientID;
-        this.ScreeningID = ScreeningID;
-        this.PriceID = PriceID;
-        this.RowReservation = RowReservation;
-        this.ColumnReservation = ColumnReservation;
+    public Reservations(int clientID, int screeningID, int priceID, int rowReservation, int columnReservation) {
+        this.clientID = clientID;
+        this.screeningID = screeningID;
+        this.priceID = priceID;
+        this.rowReservation = rowReservation;
+        this.columnReservation = columnReservation;
     }
 
-    public Reservations(int ReservationID, int ClientID, int ScreeningID, int PriceID, int RowReservation, int ColumnReservation) {
-        this.ReservationID = ReservationID;
-        this.ClientID = ClientID;
-        this.ScreeningID = ScreeningID;
-        this.PriceID = PriceID;
-        this.RowReservation = RowReservation;
-        this.ColumnReservation = ColumnReservation;
+    public Reservations(int reservationID, int clientID, int screeningID, int priceID, int rowReservation, int columnReservation) {
+        this.reservationID = reservationID;
+        this.clientID = clientID;
+        this.screeningID = screeningID;
+        this.priceID = priceID;
+        this.rowReservation = rowReservation;
+        this.columnReservation = columnReservation;
     }
 
     public int getReservationID() {
-        return ReservationID;
+        return reservationID;
     }
 
     public int getClientID() {
-        return ClientID;
+        return clientID;
     }
 
     public int getScreeningID() {
-        return ScreeningID;
+        return screeningID;
     }
 
     public int getPriceID() {
-        return PriceID;
+        return priceID;
     }
 
     public int getRowReservation() {
-        return RowReservation;
+        return rowReservation;
     }
 
     public int getColumnReservation() {
-        return ColumnReservation;
+        return columnReservation;
     }
 
     public int getRow() {
-        return RowReservation;
+        return rowReservation;
     }
 
     public int getCol() {
-        return ColumnReservation;
+        return columnReservation;
     }
 }

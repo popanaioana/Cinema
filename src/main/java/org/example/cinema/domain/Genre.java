@@ -1,23 +1,23 @@
 package org.example.cinema.domain;
 
 public class Genre {
-    private int GenreID;
-    private String Name;
+    private int genreID;
+    private String name;
 
-    public Genre(int GenreID, String Name) {
-        this.GenreID = GenreID;
-        this.Name = Name;
-    }
-
-    public String getGenreName() {
-        return Name;
+    public Genre(int genreID, String name) {
+        this.genreID = genreID;
+        this.name = name;
     }
 
     public int getGenreID() {
-        return GenreID;
+        return genreID;
     }
 
-    public void setGenreName(String s) {
-        Name = s;
+    public String getGenreName() {
+        return name;
+    }
+
+    public void setGenreName(String genreName) {
+        this.name = genreName;
     }
 }

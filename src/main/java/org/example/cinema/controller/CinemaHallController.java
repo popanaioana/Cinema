@@ -6,7 +6,7 @@ import org.example.cinema.service.CinemaHallService;
 import java.util.List;
 
 public class CinemaHallController {
-    private CinemaHallService cinemaHallService;
+    private final CinemaHallService cinemaHallService;
 
     public CinemaHallController(CinemaHallService cinemaHallService) {
         this.cinemaHallService = cinemaHallService;

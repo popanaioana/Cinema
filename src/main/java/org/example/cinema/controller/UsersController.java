@@ -9,7 +9,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class UsersController {
-    private UsersService usersService;
+
+    private final UsersService usersService;
 
     public UsersController(UsersService usersService) {
         this.usersService = usersService;
@@ -21,27 +22,21 @@ public class UsersController {
     }
 
     public Users handleGetUser(String userName, String password) {
-        if (usersService.getUser(userName, password) instanceof Client) {
-            Client client = (Client) usersService.getUser(userName, password);
-            return client;
-        } else if (usersService.getUser(userName, password) instanceof AdminCinema) {
-            AdminCinema adminCinema = (AdminCinema) usersService.getUser(userName, password);
-            return adminCinema;
-        }
-        return null;
+        return usersService.getUser(userName, password);
     }
 
-    public Users handleGetUser(int id) {
-        return usersService.getUser(id);
+    public Users handleGetUser(int userID) {
+        return usersService.getUser(userID);
     }
 
-    public void handleUpdateUserClient(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword, int typeID) {
-        Client client = new Client(firstName, lastName, email, phoneNumber, dateOfBirth, userName, userPassword, typeID);
+    public void handleUpdateUserClient(int userID, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword, int typeID) {
+        Client client = new Client(userID, firstName, lastName, email, phoneNumber, dateOfBirth, userName, userPassword, typeID);
         usersService.updateUser(client);
     }
 
-    public void handleUpdateUserAdminCinema(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword, double salary, LocalDate dateOfEmployement) {
-        AdminCinema adminCinema = new AdminCinema(firstName, lastName, email, phoneNumber, dateOfBirth, userName, userPassword, salary, dateOfEmployement);
+    public void handleUpdateUserAdminCinema(int userID, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword, double salary, LocalDate dateOfEmployment) {
+        AdminCinema adminCinema = new AdminCinema(userID, firstName, lastName, email, phoneNumber, dateOfBirth, userName, userPassword, salary, dateOfEmployment);
+        usersService.updateUser(adminCinema);
     }
 
     public void handleDeleteUser(String userName, String password) {

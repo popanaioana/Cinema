@@ -1,31 +1,31 @@
 package org.example.cinema.domain;
 
 public class CinemaHall {
-    private int CinemaHallID;
-    private int Number;
-    private int RowsHall;
-    private int ColumnsHall;
+    private int cinemaHallID;
+    private int number;
+    private int rowsHall;
+    private int columnsHall;
 
-    public CinemaHall(int CinemaHallID, int Number, int RowsHall, int ColumnsHall) {
-        this.CinemaHallID = CinemaHallID;
-        this.Number = Number;
-        this.RowsHall = RowsHall;
-        this.ColumnsHall = ColumnsHall;
+    public CinemaHall(int cinemaHallID, int number, int rowsHall, int columnsHall) {
+        this.cinemaHallID = cinemaHallID;
+        this.number = number;
+        this.rowsHall = rowsHall;
+        this.columnsHall = columnsHall;
     }
 
     public int getColumns() {
-        return ColumnsHall;
+        return columnsHall;
     }
 
     public int getRows() {
-        return RowsHall;
+        return rowsHall;
     }
 
     public int getName() {
-        return Number;
+        return number;
     }
 
     public int getCinemaHallID() {
-        return CinemaHallID;
+        return cinemaHallID;
     }
 }

@@ -1,14 +1,14 @@
 package org.example.cinema.service;
 
 import org.example.cinema.domain.ParentalConsent;
-import org.example.cinema.repository.db.ParentalConsentRepository;
+import org.example.cinema.repository.interfaces.IParentalConsentRepository;
 
 import java.util.List;
 
 public class ParentalConsentService {
-    private ParentalConsentRepository parentalConsentRepository;
+    private final IParentalConsentRepository parentalConsentRepository;
 
-    public ParentalConsentService(ParentalConsentRepository parentalConsentRepository) {
+    public ParentalConsentService(IParentalConsentRepository parentalConsentRepository) {
         this.parentalConsentRepository = parentalConsentRepository;
     }
 

@@ -2,7 +2,6 @@ package org.example.cinema.repository.interfaces;
 
 import org.example.cinema.domain.Movie;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IMovieRepository {

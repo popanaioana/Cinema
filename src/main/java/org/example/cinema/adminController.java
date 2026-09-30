@@ -1,8 +1,6 @@
 package org.example.cinema;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,7 +15,6 @@ import org.example.cinema.validators.UsersValidator;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class adminController {
@@ -28,9 +25,9 @@ public class adminController {
     @FXML
     private Spinner<Integer> minuteSpinner;
     @FXML
-    private TableView moviesTable;
+    private TableView<Movie> moviesTable;
     @FXML
-    private TableView screeningsTable;
+    private TableView<Screening> screeningsTable;
     @FXML
     private TableColumn<Movie, Integer> colMovieID;
     @FXML
@@ -56,15 +53,15 @@ public class adminController {
     @FXML
     private TableColumn<Screening, LocalTime> colTime;
     @FXML
-    private ComboBox<String> comboBoxMovie;
+    private ComboBox<Movie> comboBoxMovie;
     @FXML
-    private ComboBox<Integer> comboBoxCinemaHall;
+    private ComboBox<CinemaHall> comboBoxCinemaHall;
     @FXML
-    private ComboBox<String> comboBoxScreeningType;
+    private ComboBox<ScreeningType> comboBoxScreeningType;
     @FXML
-    private ComboBox<String> comboBoxFormat;
+    private ComboBox<Format> comboBoxFormat;
     @FXML
-    private ComboBox<Integer> comboBoxParentalConsent;
+    private ComboBox<ParentalConsent> comboBoxParentalConsent;
     @FXML
     private TextField movieIDTextField;
     @FXML
@@ -97,226 +94,242 @@ public class adminController {
     private Label priceLabel;
     @FXML
     private Label feedbackReservationLabel;
-    private MovieDBRepository movieRepository;
-    private MovieService movieService;
-    private MovieController movieController;
-    private ScreeningDBRepository screeningRepository;
-    private ScreeningService screeningService;
-    private ScreeningController screeningController;
-    private CinemaHallDBRepository cinemaHallRepository;
-    private CinemaHallService cinemaHallService;
-    private CinemaHallController cinemaHallController;
-    private ScreeningTypeDBRepository screeningTypeRepository;
-    private ScreeningTypeService screeningTypeService;
-    private ScreeningTypeController screeningTypeController;
-    private FormatDBRepository formatRepository;
-    private FormatService formatService;
-    private FormatController formatController;
-    private ParentalConsentRepository parentalConsentRepository;
-    private ParentalConsentService parentalConsentService;
-    private ParentalConsentController parentalConsentController;
-    private ReservationDBRepository reservationRepository;
-    private ReservationsService reservationsService;
-    private ReservationsController reservationsController;
-    private PricingDBRepository pricingRepository;
-    private PricingService pricingService;
-    private PricingController pricingController;
-    private UsersDBRepository usersRepository;
-    private UsersService usersService;
-    private UsersController usersController;
+    private final MovieController movieController;
+    private final ScreeningController screeningController;
+    private final CinemaHallController cinemaHallController;
+    private final ScreeningTypeController screeningTypeController;
+    private final FormatController formatController;
+    private final ParentalConsentController parentalConsentController;
+    private final ReservationsController reservationsController;
+    private final PricingController pricingController;
+    private final UsersController usersController;
+
+    public adminController() {
+        MovieService movieService = new MovieService(new MovieDBRepository(), new MovieValidator());
+        this.movieController = new MovieController(movieService);
+        ScreeningService screeningService = new ScreeningService(new ScreeningDBRepository(), new ScreeningValidator());
+        this.screeningController = new ScreeningController(screeningService);
+        CinemaHallService cinemaHallService = new CinemaHallService(new CinemaHallDBRepository());
+        this.cinemaHallController = new CinemaHallController(cinemaHallService);
+        ScreeningTypeService screeningTypeService = new ScreeningTypeService(new ScreeningTypeDBRepository());
+        this.screeningTypeController = new ScreeningTypeController(screeningTypeService);
+        FormatService formatService = new FormatService(new FormatDBRepository());
+        this.formatController = new FormatController(formatService);
+        ParentalConsentService parentalConsentService = new ParentalConsentService(new ParentalConsentRepository());
+        this.parentalConsentController = new ParentalConsentController(parentalConsentService);
+        ReservationsService reservationsService = new ReservationsService(new ReservationDBRepository());
+        this.reservationsController = new ReservationsController(reservationsService);
+        PricingService pricingService = new PricingService(new PricingDBRepository());
+        this.pricingController = new PricingController(pricingService);
+        UsersService usersService = new UsersService(new UsersDBRepository(), new UsersValidator(), new ClientValidator());
+        this.usersController = new UsersController(usersService);
+    }
 
     @FXML
     public void initialize() {
-        colMovieID.setCellValueFactory(new PropertyValueFactory<>("MovieID"));
-        colFormat.setCellValueFactory(new PropertyValueFactory<>("FormatID"));
-        colParentalConsent.setCellValueFactory(new PropertyValueFactory<>("ParentalConsentID"));
-        colTitle.setCellValueFactory(new PropertyValueFactory<>("Title"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("Description"));
-        colDuration.setCellValueFactory(new PropertyValueFactory<>("Duration"));
-        colScreeningID.setCellValueFactory(new PropertyValueFactory<>("ScreeningID"));
-        colMovieSID.setCellValueFactory(new PropertyValueFactory<>("MovieID"));
-        colCinemaHallID.setCellValueFactory(new PropertyValueFactory<>("CinemaHallID"));
-        colTypeID.setCellValueFactory(new PropertyValueFactory<>("TypeID"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("DateScreening"));
-        colTime.setCellValueFactory(new PropertyValueFactory<>("TimeScreening"));
+        configureTables();
+        configureSpinners();
+        configureComboBoxes();
         loadTables();
         loadComboBoxes();
         moviesTable.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((obs, oldVal, newVal) -> {
-                    if (newVal != null) {
-                        Movie movie = (Movie) newVal;
+                .addListener((obs, oldValue, newValue) -> {
+                    if (newValue != null) {
                         movieIDTextField.setText(
-                                String.valueOf(movie.getMovieID())
+                                String.valueOf(newValue.getMovieID())
                         );
                     }
                 });
         screeningsTable.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((obs, oldVal, newVal) -> {
-                    if (newVal != null) {
-                        Screening screening = (Screening) newVal;
+                .addListener((obs, oldValue, newValue) -> {
+                    if (newValue != null) {
                         screeningIDTextField.setText(
-                                String.valueOf(screening.getScreeningID())
+                                String.valueOf(newValue.getScreeningID())
                         );
                     }
                 });
-        hourSpinner.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 12)
-        );
-        minuteSpinner.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0)
-        );
+    }
+
+    private void configureTables() {
+        colMovieID.setCellValueFactory(new PropertyValueFactory<>("movieID"));
+        colFormat.setCellValueFactory(new PropertyValueFactory<>("formatID"));
+        colParentalConsent.setCellValueFactory(new PropertyValueFactory<>("parentalConsentID"));
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colDuration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        colScreeningID.setCellValueFactory(new PropertyValueFactory<>("screeningID"));
+        colMovieSID.setCellValueFactory(new PropertyValueFactory<>("movieID"));
+        colCinemaHallID.setCellValueFactory(new PropertyValueFactory<>("cinemaHallID"));
+        colTypeID.setCellValueFactory(new PropertyValueFactory<>("typeID"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("dateScreening"));
+        colTime.setCellValueFactory(new PropertyValueFactory<>("timeScreening"));
+    }
+
+    private void configureSpinners() {
+        hourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 12));
+        minuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
+    }
+
+    private void configureComboBoxes() {
+        comboBoxMovie.setCellFactory(listView -> createMovieCell());
+        comboBoxMovie.setButtonCell(createMovieCell());
+        comboBoxCinemaHall.setCellFactory(listView -> createCinemaHallCell());
+        comboBoxCinemaHall.setButtonCell(createCinemaHallCell());
+        comboBoxScreeningType.setCellFactory(listView -> createScreeningTypeCell());
+        comboBoxScreeningType.setButtonCell(createScreeningTypeCell());
+        comboBoxFormat.setCellFactory(listView -> createFormatCell());
+        comboBoxFormat.setButtonCell(createFormatCell());
+        comboBoxParentalConsent.setCellFactory(listView -> createParentalConsentCell());
+        comboBoxParentalConsent.setButtonCell(createParentalConsentCell());
+    }
+
+    private ListCell<Movie> createMovieCell() {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(Movie movie, boolean empty) {
+                super.updateItem(movie, empty);
+                setText(empty || movie == null ? null : movie.getTitle());
+            }
+        };
+    }
+
+    private ListCell<CinemaHall> createCinemaHallCell() {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(CinemaHall cinemaHall, boolean empty) {
+                super.updateItem(cinemaHall, empty);
+                setText(empty || cinemaHall == null ? null : String.valueOf(cinemaHall.getCinemaHallID()));
+            }
+        };
+    }
+
+    private ListCell<ScreeningType> createScreeningTypeCell() {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(ScreeningType screeningType, boolean empty) {
+                super.updateItem(screeningType, empty);
+                setText(empty || screeningType == null ? null : screeningType.getTypeName());
+            }
+        };
+    }
+
+    private ListCell<Format> createFormatCell() {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(Format format, boolean empty
+            ) {
+                super.updateItem(format, empty);
+                setText(empty || format == null ? null : format.getTypeFormat());
+            }
+        };
+    }
+
+    private ListCell<ParentalConsent> createParentalConsentCell() {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(ParentalConsent parentalConsent, boolean empty) {
+                super.updateItem(parentalConsent, empty);
+                setText(empty || parentalConsent == null ? null : String.valueOf(parentalConsent.getAge()));
+            }
+        };
     }
 
     private void loadComboBoxes() {
-        cinemaHallRepository = new CinemaHallDBRepository();
-        cinemaHallService = new CinemaHallService(cinemaHallRepository);
-        cinemaHallController = new CinemaHallController(cinemaHallService);
-        List<CinemaHall> cinemaHalls = cinemaHallController.handleGetCinemaHalls();
-        List<Integer> cinemaHallsID = new ArrayList<>();
-        for (CinemaHall cinemaHall : cinemaHalls) {
-            cinemaHallsID.add(cinemaHall.getCinemaHallID());
-        }
-        ObservableList<Integer> cinemaHallIDs = FXCollections.observableArrayList(cinemaHallsID);
-        comboBoxCinemaHall.setItems(cinemaHallIDs);
-        screeningTypeRepository = new ScreeningTypeDBRepository();
-        screeningTypeService = new ScreeningTypeService(screeningTypeRepository);
-        screeningTypeController = new ScreeningTypeController(screeningTypeService);
-        List<ScreeningType> screeningTypes = screeningTypeController.handleGetScreeningTypes();
-        List<String> screeningTypeNames = new ArrayList<>();
-        for (ScreeningType screeningType : screeningTypes) {
-            screeningTypeNames.add(screeningType.getTypeName());
-        }
-        ObservableList<String> screeningTypeNamesList = FXCollections.observableArrayList(screeningTypeNames);
-        comboBoxScreeningType.setItems(screeningTypeNamesList);
-        formatRepository = new FormatDBRepository();
-        formatService = new FormatService(formatRepository);
-        formatController = new FormatController(formatService);
-        List<Format> formats = formatController.handleGetFormats();
-        List<String> formatTypes = new ArrayList<>();
-        for (Format format : formats) {
-            formatTypes.add(format.getTypeFormat());
-        }
-        ObservableList<String> formatTypesList = FXCollections.observableArrayList(formatTypes);
-        comboBoxFormat.setItems(formatTypesList);
-        parentalConsentRepository = new ParentalConsentRepository();
-        parentalConsentService = new ParentalConsentService(parentalConsentRepository);
-        parentalConsentController = new ParentalConsentController(parentalConsentService);
-        List<ParentalConsent> parentalConsents = parentalConsentController.handleGetParentalConsents();
-        List<Integer> parentalConsentAge = new ArrayList<>();
-        for (ParentalConsent parentalConsent : parentalConsents) {
-            parentalConsentAge.add(parentalConsent.getAge());
-        }
-        ObservableList<Integer> parentalConsentAgeList = FXCollections.observableArrayList(parentalConsentAge);
-        comboBoxParentalConsent.setItems(parentalConsentAgeList);
+        comboBoxCinemaHall.setItems(FXCollections.observableArrayList(cinemaHallController.handleGetCinemaHalls()));
+        comboBoxScreeningType.setItems(FXCollections.observableArrayList(screeningTypeController.handleGetScreeningTypes()));
+        comboBoxFormat.setItems(FXCollections.observableArrayList(formatController.handleGetFormats()));
+        comboBoxParentalConsent.setItems(FXCollections.observableArrayList(parentalConsentController.handleGetParentalConsents()));
+        comboBoxMovie.setItems(FXCollections.observableArrayList(movieController.handleGetMovies()));
     }
 
     private void loadTables() {
-        movieRepository = new MovieDBRepository();
-        movieService = new MovieService(movieRepository, new MovieValidator());
-        movieController = new MovieController(movieService);
         List<Movie> movies = movieController.handleGetMovies();
-        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(movies);
-        moviesTable.setItems(observableMovies);
-        List<String> movieNames = new ArrayList<>();
-        for (Movie movie : movies) {
-            movieNames.add(movie.getTitle());
-        }
-        ObservableList<String> observableMovieNames = FXCollections.observableArrayList(movieNames);
-        comboBoxMovie.setItems(observableMovieNames);
-        screeningRepository = new ScreeningDBRepository();
-        screeningService = new ScreeningService(screeningRepository);
-        screeningController = new ScreeningController(screeningService);
+        moviesTable.setItems(FXCollections.observableArrayList(movies));
         List<Screening> screenings = screeningController.handleGetAllScreenings();
-        ObservableList<Screening> observableScreening = FXCollections.observableArrayList(screenings);
-        screeningsTable.setItems(observableScreening);
+        screeningsTable.setItems(FXCollections.observableArrayList(screenings));
+        comboBoxMovie.setItems(FXCollections.observableArrayList(movies));
     }
 
-    public LocalDate getDate() {
+    private LocalDate getDate() {
         return datePicker.getValue();
     }
 
-    public LocalTime getTime() {
+    private LocalTime getTime() {
         return LocalTime.of(hourSpinner.getValue(), minuteSpinner.getValue());
     }
 
+    @FXML
     public void addMovie() {
-        formatRepository = new FormatDBRepository();
-        formatService = new FormatService(formatRepository);
-        formatController = new FormatController(formatService);
-        Format selFormat = formatController.handleGetFormat(comboBoxFormat.getValue());
-        if (selFormat != null) {
-            int formatID = selFormat.getFormatID();
-            parentalConsentRepository = new ParentalConsentRepository();
-            parentalConsentService = new ParentalConsentService(parentalConsentRepository);
-            parentalConsentController = new ParentalConsentController(parentalConsentService);
-            ParentalConsent selParentalConsent =  parentalConsentController.handleGetParentalConsent(selFormat.getFormatID());
-            if (selParentalConsent != null) {
-                int parentalconsentID = selParentalConsent.getParentalConsentID();
-                movieRepository = new MovieDBRepository();
-                movieService = new MovieService(movieRepository, new MovieValidator());
-                movieController = new MovieController(movieService);
-                movieController.handleAddMovie(formatID, parentalconsentID, titleTextField.getText(), descriptionTextField.getText(), Integer.parseInt(durationTextField.getText()));
-                movieFeedbackLabel.setText("movie added successfully.");
-                clearMovieInfo();
-                loadTables();
-                loadTables();
-            } else {
-                movieFeedbackLabel.setText("missing parental consent.");
+        try {
+            Format selectedFormat = comboBoxFormat.getValue();
+            ParentalConsent selectedParentalConsent = comboBoxParentalConsent.getValue();
+            if (selectedFormat == null) {
+                movieFeedbackLabel.setText("Select a format.");
+                return;
             }
-        } else {
-            movieFeedbackLabel.setText("missing format.");
+            if (selectedParentalConsent == null) {
+                movieFeedbackLabel.setText("Select a parental consent.");
+                return;
+            }
+            int duration = Integer.parseInt(durationTextField.getText());
+            movieController.handleAddMovie(selectedFormat.getFormatID(), selectedParentalConsent.getParentalConsentID(), titleTextField.getText(), descriptionTextField.getText(), duration);
+            movieFeedbackLabel.setText("Movie added successfully.");
+            clearMovieInfo();
+            loadTables();
+        } catch (NumberFormatException e) {
+            movieFeedbackLabel.setText("Duration must be a valid number.");
+        } catch (IllegalArgumentException e) {
+            movieFeedbackLabel.setText(e.getMessage());
         }
     }
 
+    @FXML
     public void updateMovie() {
-        int movieID = Integer.parseInt(movieIDTextField.getText());
-        if (movieID != 0) {
-            formatRepository = new FormatDBRepository();
-            formatService = new FormatService(formatRepository);
-            formatController = new FormatController(formatService);
-            Format selFormat = formatController.handleGetFormat(comboBoxFormat.getValue());
-            if (selFormat != null) {
-                int formatID = selFormat.getFormatID();
-                parentalConsentRepository = new ParentalConsentRepository();
-                parentalConsentService = new ParentalConsentService(parentalConsentRepository);
-                parentalConsentController = new ParentalConsentController(parentalConsentService);
-                ParentalConsent selParentalConsent =  parentalConsentController.handleGetParentalConsent(selFormat.getFormatID());
-                if (selParentalConsent != null) {
-                    int parentalconsentID = selParentalConsent.getParentalConsentID();
-                    movieRepository = new MovieDBRepository();
-                    movieService = new MovieService(movieRepository, new MovieValidator());
-                    movieController = new MovieController(movieService);
-                    movieController.handleUpdateMovie(movieID, formatID, parentalconsentID, titleTextField.getText(), descriptionTextField.getText(), Integer.parseInt(durationTextField.getText()));
-                    movieFeedbackLabel.setText("movie updated successfully.");
-                    clearMovieInfo();
-                    loadTables();
-                    loadTables();
-                } else {
-                    movieFeedbackLabel.setText("missing parental consent.");
-                }
-            } else {
-                movieFeedbackLabel.setText("missing format.");
+        try {
+            if (movieIDTextField.getText().isBlank()) {
+                movieFeedbackLabel.setText("Select a movie.");
+                return;
             }
-        } else {
-            movieFeedbackLabel.setText("enter valid movie ID.");
+            int movieID = Integer.parseInt(movieIDTextField.getText());
+            Format selectedFormat = comboBoxFormat.getValue();
+            ParentalConsent selectedParentalConsent = comboBoxParentalConsent.getValue();
+            if (selectedFormat == null) {
+                movieFeedbackLabel.setText("Select a format.");
+                return;
+            }
+            if (selectedParentalConsent == null) {
+                movieFeedbackLabel.setText("Select a parental consent.");
+                return;
+            }
+            int duration = Integer.parseInt(durationTextField.getText());
+            movieController.handleUpdateMovie(movieID, selectedFormat.getFormatID(), selectedParentalConsent.getParentalConsentID(), titleTextField.getText(), descriptionTextField.getText(), duration);
+            movieFeedbackLabel.setText("Movie updated successfully.");
+            clearMovieInfo();
+            loadTables();
+        } catch (NumberFormatException e) {
+            movieFeedbackLabel.setText("Movie ID and duration must be valid numbers.");
+        } catch (IllegalArgumentException e) {
+            movieFeedbackLabel.setText(e.getMessage());
         }
     }
 
+    @FXML
     public void deleteMovie() {
-        int movieID = Integer.parseInt(movieIDTextField.getText());
-        if (movieID != 0) {
-            movieRepository =  new MovieDBRepository();
-            movieService = new MovieService(movieRepository, new MovieValidator());
-            movieController = new MovieController(movieService);
+        try {
+            if (movieIDTextField.getText().isBlank()) {
+                movieFeedbackLabel.setText("Select a movie.");
+                return;
+            }
+            int movieID = Integer.parseInt(movieIDTextField.getText());
             movieController.handleDeleteMovie(movieID);
-            movieFeedbackLabel.setText("movie deleted successfully.");
+            movieFeedbackLabel.setText("Movie deleted successfully.");
             clearMovieInfo();
             loadTables();
             loadComboBoxes();
-        } else {
-            movieFeedbackLabel.setText("enter valid movie ID.");
+        } catch (NumberFormatException e) {
+            movieFeedbackLabel.setText("Movie ID must be a valid number.");
         }
     }
 
@@ -325,164 +338,161 @@ public class adminController {
         titleTextField.clear();
         descriptionTextField.clear();
         durationTextField.clear();
+        comboBoxFormat.getSelectionModel().clearSelection();
+        comboBoxParentalConsent.getSelectionModel().clearSelection();
     }
 
     private void clearScreeningInfo() {
         screeningIDTextField.clear();
         datePicker.setValue(null);
-        hourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 24, 0));
-        minuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 60, 0));
+        hourSpinner.getValueFactory().setValue(12);
+        minuteSpinner.getValueFactory().setValue(0);
+        comboBoxMovie.getSelectionModel().clearSelection();
+        comboBoxCinemaHall.getSelectionModel().clearSelection();
+        comboBoxScreeningType.getSelectionModel().clearSelection();
     }
 
+    @FXML
     public void addScreening() {
-        String movieName = comboBoxMovie.getValue();
-        if (movieName.equals("") == false) {
-            movieRepository = new MovieDBRepository();
-            movieService = new MovieService(movieRepository, new MovieValidator());
-            movieController = new MovieController(movieService);
-            Movie selMovie = movieController.handleGetMovie(movieName);
-            int selMovieID = selMovie.getMovieID();
-            int selCinemaHallId = comboBoxCinemaHall.getValue();
-            if (selCinemaHallId != 0) {
-                String selScreeningTypeName = comboBoxScreeningType.getValue();
-                if (selScreeningTypeName.equals("") == false) {
-                    screeningTypeRepository = new ScreeningTypeDBRepository();
-                    screeningTypeService = new ScreeningTypeService(screeningTypeRepository);
-                    screeningTypeController = new ScreeningTypeController(screeningTypeService);
-                    ScreeningType selScreeningType = screeningTypeController.handleGetScreeningType(selScreeningTypeName);
-                    int selScreeningTypeID = selScreeningType.getScreeningTypeID();
-                    screeningRepository = new ScreeningDBRepository();
-                    screeningService = new ScreeningService(screeningRepository, new ScreeningValidator());
-                    screeningController = new ScreeningController(screeningService);
-                    LocalDate selDate = getDate();
-                    LocalTime selTime = getTime();
-                    screeningController.handleAddScreening(selMovieID, selCinemaHallId, selDate, selTime, selScreeningTypeID);
-                    clearScreeningInfo();
-                    loadTables();
-                    screeningFeedbackLabel.setText("screening successfully added.");
-                } else {
-                    screeningFeedbackLabel.setText("select a screening type.");
-                }
-            } else {
-                screeningFeedbackLabel.setText("select a cinema hall.");
-            }
-        } else {
-            screeningFeedbackLabel.setText("select movie.");
-        }
-    }
-
-    public void updateScreening() {
-        int screeningID = Integer.parseInt(screeningIDTextField.getText());
-        if (screeningID != 0) {
-            String movieName = comboBoxMovie.getValue();
-            if (movieName.equals("") == false) {
-                movieRepository = new MovieDBRepository();
-                movieService = new MovieService(movieRepository, new MovieValidator());
-                movieController = new MovieController(movieService);
-                Movie selMovie = movieController.handleGetMovie(movieName);
-                int selMovieID = selMovie.getMovieID();
-                int selCinemaHallId = comboBoxCinemaHall.getValue();
-                if (selCinemaHallId != 0) {
-                    String selScreeningTypeName = comboBoxScreeningType.getValue();
-                    if (selScreeningTypeName.equals("") == false) {
-                        screeningTypeRepository = new ScreeningTypeDBRepository();
-                        screeningTypeService = new ScreeningTypeService(screeningTypeRepository);
-                        screeningTypeController = new ScreeningTypeController(screeningTypeService);
-                        ScreeningType selScreeningType = screeningTypeController.handleGetScreeningType(selScreeningTypeName);
-                        int selScreeningTypeID = selScreeningType.getScreeningTypeID();
-                        screeningRepository = new ScreeningDBRepository();
-                        screeningService = new ScreeningService(screeningRepository, new ScreeningValidator());
-                        screeningController = new ScreeningController(screeningService);
-                        LocalDate selDate = getDate();
-                        LocalTime selTime = getTime();
-                        screeningController.handleUpdateScreening(screeningID, selMovieID, selCinemaHallId, selDate, selTime, selScreeningTypeID);
-                        clearScreeningInfo();
-                        loadTables();
-                        screeningFeedbackLabel.setText("screening successfully updated.");
-                    } else {
-                        screeningFeedbackLabel.setText("select a screening type.");
-                    }
-                } else {
-                    screeningFeedbackLabel.setText("select a cinema hall.");
-                }
-            } else {
-                screeningFeedbackLabel.setText("select movie.");
-            }
-        } else {
-            screeningFeedbackLabel.setText("enter valid screening ID.");
-        }
-    }
-
-    public void deleteScreening() {
-        int screeningID = Integer.parseInt(screeningIDTextField.getText());
-        if (screeningID != 0) {
-            screeningRepository = new ScreeningDBRepository();
-            screeningService = new ScreeningService(screeningRepository, new ScreeningValidator());
-            screeningController = new ScreeningController(screeningService);
-            screeningController.handleDeleteScreening(screeningID);
-            screeningFeedbackLabel.setText("screening deleted successfully.");
-            clearScreeningInfo();
-            loadTables();
-        } else {
-            screeningFeedbackLabel.setText("enter valid screening ID.");
-        }
-    }
-
-    public void findReservation() {
-        int reservationID = Integer.parseInt(reservationIDTextField.getText());
-        if (reservationID != 0) {
-            pricingRepository = new PricingDBRepository();
-            pricingService = new PricingService(pricingRepository);
-            pricingController = new PricingController(pricingService);
-            reservationRepository = new ReservationDBRepository();
-            reservationsService = new ReservationsService(reservationRepository);
-            reservationsController = new ReservationsController(reservationsService, pricingService);
-            Reservations reservation = reservationsController.handleGetReservation(reservationID);
-            if (reservation != null) {
-                feedbackReservationLabel.setText("reservation successfully found.");
-                seatLabel.setText(String.valueOf(reservation.getRowReservation()) + "-" + reservation.getColumnReservation());
-                int clientID = reservation.getClientID();
-                usersRepository = new UsersDBRepository();
-                usersService = new UsersService(usersRepository, new UsersValidator(), new ClientValidator());
-                usersController = new UsersController(usersService);
-                Users client = usersController.handleGetUser(clientID);
-                clientLabel.setText(client.getFirstName() + " " + client.getLastName());
-                int priceID = reservation.getPriceID();
-                Pricing price = pricingController.handleGetPricing(priceID);
-                priceLabel.setText(String.valueOf(price.getPrice()));
-                int screeningID = reservation.getScreeningID();
-                screeningRepository = new ScreeningDBRepository();
-                screeningService = new ScreeningService(screeningRepository, new ScreeningValidator());
-                screeningController = new ScreeningController(screeningService);
-                Screening screening = screeningController.handleGetScreening(screeningID);
-                dateLabel.setText(String.valueOf(screening.getDateScreening()));
-                timeLabel.setText(String.valueOf(screening.getTimeScreening()));
-                cinemaHallLabel.setText(String.valueOf(screening.getCinemaHallID()));
-                int movieID = screening.getMovieID();
-                movieRepository = new MovieDBRepository();
-                movieService = new MovieService(movieRepository, new MovieValidator());
-                movieController = new MovieController(movieService);
-                Movie movie = movieController.handleGetMovie(movieID);
-                movieLabel.setText(movie.getTitle());
-                reservationIDTextField.clear();
-            } else {
+        try {
+            Movie selectedMovie = comboBoxMovie.getValue();
+            CinemaHall selectedCinemaHall = comboBoxCinemaHall.getValue();
+            ScreeningType selectedScreeningType = comboBoxScreeningType.getValue();
+            LocalDate selectedDate = getDate();
+            if (selectedMovie == null) {
+                screeningFeedbackLabel.setText("Select a movie.");
                 return;
             }
-        } else {
-            return;
+            if (selectedCinemaHall == null) {
+                screeningFeedbackLabel.setText("Select a cinema hall.");
+                return;
+            }
+            if (selectedScreeningType == null) {
+                screeningFeedbackLabel.setText("Select a screening type.");
+                return;
+            }
+            if (selectedDate == null) {
+                screeningFeedbackLabel.setText("Select a screening date.");
+                return;
+            }
+            screeningController.handleAddScreening(selectedMovie.getMovieID(), selectedCinemaHall.getCinemaHallID(), selectedDate, getTime(), selectedScreeningType.getScreeningTypeID());
+            screeningFeedbackLabel.setText("Screening successfully added.");
+            clearScreeningInfo();
+            loadTables();
+        } catch (IllegalArgumentException e) {
+            screeningFeedbackLabel.setText(e.getMessage());
         }
     }
 
-    public void deleteReservation() {
-        int reservationID = Integer.parseInt(reservationIDTextField.getText());
-        if (reservationID != 0) {
-            findReservation();
-            reservationRepository = new ReservationDBRepository();
-            reservationsService = new ReservationsService(reservationRepository);
-            reservationsController.handleDeleteReservation(reservationID);
-            feedbackReservationLabel.setText("reservation successfully deleted.");
-        } else {
-            return;
+    @FXML
+    public void updateScreening() {
+        try {
+            if (screeningIDTextField.getText().isBlank()) {
+                screeningFeedbackLabel.setText("Select a screening.");
+                return;
+            }
+            int screeningID = Integer.parseInt(screeningIDTextField.getText());
+            Movie selectedMovie = comboBoxMovie.getValue();
+            CinemaHall selectedCinemaHall = comboBoxCinemaHall.getValue();
+            ScreeningType selectedScreeningType = comboBoxScreeningType.getValue();
+            LocalDate selectedDate = getDate();
+            if (selectedMovie == null || selectedCinemaHall == null || selectedScreeningType == null || selectedDate == null) {
+                screeningFeedbackLabel.setText("Complete all screening fields.");
+                return;
+            }
+            screeningController.handleUpdateScreening(screeningID, selectedMovie.getMovieID(), selectedCinemaHall.getCinemaHallID(), selectedDate, getTime(), selectedScreeningType.getScreeningTypeID());
+            screeningFeedbackLabel.setText("Screening successfully updated.");
+            clearScreeningInfo();
+            loadTables();
+        } catch (NumberFormatException e) {
+            screeningFeedbackLabel.setText("Screening ID must be a valid number.");
+        } catch (IllegalArgumentException e) {
+            screeningFeedbackLabel.setText(e.getMessage());
         }
+    }
+
+    @FXML
+    public void deleteScreening() {
+        try {
+            if (screeningIDTextField.getText().isBlank()) {
+                screeningFeedbackLabel.setText("Select a screening.");
+                return;
+            }
+            int screeningID = Integer.parseInt(screeningIDTextField.getText());
+            screeningController.handleDeleteScreening(screeningID);
+            screeningFeedbackLabel.setText("Screening deleted successfully.");
+            clearScreeningInfo();
+            loadTables();
+        } catch (NumberFormatException e) {
+            screeningFeedbackLabel.setText("Screening ID must be a valid number.");
+        }
+    }
+
+    @FXML
+    public void findReservation() {
+        try {
+            if (reservationIDTextField.getText().isBlank()) {
+                clearReservationInfo();
+                feedbackReservationLabel.setText("Enter a reservation ID.");
+                return;
+            }
+            int reservationID = Integer.parseInt(reservationIDTextField.getText());
+            Reservations reservation = reservationsController.handleGetReservation(reservationID);
+            if (reservation == null) {
+                clearReservationInfo();
+                feedbackReservationLabel.setText("Reservation not found.");
+                return;
+            }
+            Users client = usersController.handleGetUser(reservation.getClientID());
+            Pricing price = pricingController.handleGetPricing(reservation.getPriceID());
+            Screening screening = screeningController.handleGetScreening(reservation.getScreeningID());
+            Movie movie = movieController.handleGetMovie(screening.getMovieID());
+            clientLabel.setText(client.getFirstName() + " " + client.getLastName());
+            movieLabel.setText(movie.getTitle());
+            dateLabel.setText(String.valueOf(screening.getDateScreening()));
+            timeLabel.setText(String.valueOf(screening.getTimeScreening()));
+            cinemaHallLabel.setText(String.valueOf(screening.getCinemaHallID()));
+            seatLabel.setText(reservation.getRowReservation() + "-" + reservation.getColumnReservation());
+            priceLabel.setText(String.valueOf(price.getPrice()));
+            feedbackReservationLabel.setText("Reservation successfully found.");
+        } catch (NumberFormatException e) {
+            clearReservationInfo();
+            feedbackReservationLabel.setText("Reservation ID must be a valid number.");
+        }
+    }
+
+    @FXML
+    public void deleteReservation() {
+        try {
+            if (reservationIDTextField.getText().isBlank()) {
+                clearReservationInfo();
+                feedbackReservationLabel.setText("Enter a reservation ID.");
+                return;
+            }
+            int reservationID = Integer.parseInt(reservationIDTextField.getText());
+            Reservations reservation = reservationsController.handleGetReservation(reservationID);
+            if (reservation == null) {
+                clearReservationInfo();
+                feedbackReservationLabel.setText("Reservation not found.");
+                return;
+            }
+            reservationsController.handleDeleteReservation(reservationID);
+            clearReservationInfo();
+            reservationIDTextField.clear();
+            feedbackReservationLabel.setText("Reservation successfully deleted.");
+        } catch (NumberFormatException e) {
+            clearReservationInfo();
+            feedbackReservationLabel.setText("Reservation ID must be a valid number.");
+        }
+    }
+
+    private void clearReservationInfo() {
+        clientLabel.setText("");
+        movieLabel.setText("");
+        dateLabel.setText("");
+        timeLabel.setText("");
+        cinemaHallLabel.setText("");
+        seatLabel.setText("");
+        priceLabel.setText("");
     }
 }

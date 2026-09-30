@@ -10,5 +10,5 @@ public interface IReservationsRepository {
     int addReservation(Reservations reservation);
     void updateReservation(Reservations reservation);
     void deleteReservation(int id);
-    public List<Reservations> getReservationByScreening(int screeningID);
+    List<Reservations> getReservationByScreening(int screeningID);
 }

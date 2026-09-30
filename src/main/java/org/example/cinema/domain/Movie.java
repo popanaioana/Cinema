@@ -1,51 +1,51 @@
 package org.example.cinema.domain;
 
 public class Movie {
-    private int MovieID;
-    private int FormatID;
-    private int ParentalConsentID;
-    private String Title;
-    private String Description;
-    private int Duration;
+    private int movieID;
+    private int formatID;
+    private int parentalConsentID;
+    private String title;
+    private String description;
+    private int duration;
 
-    public Movie(int FormatID, int ParentalConsentID, String Title, String Description, int Duration) {
-        this.FormatID = FormatID;
-        this.ParentalConsentID = ParentalConsentID;
-        this.Title = Title;
-        this.Description = Description;
-        this.Duration = Duration;
+    public Movie(int formatID, int parentalConsentID, String title, String description, int duration) {
+        this.formatID = formatID;
+        this.parentalConsentID = parentalConsentID;
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
     }
 
-    public Movie(int MovieID, int FormatID, int ParentalConsentID, String Title, String Description, int Duration) {
-        this.MovieID = MovieID;
-        this.FormatID = FormatID;
-        this.ParentalConsentID = ParentalConsentID;
-        this.Title = Title;
-        this.Description = Description;
-        this.Duration = Duration;
-    }
-
-    public int getFormatID() {
-        return FormatID;
-    }
-
-    public int getParentalConsentID() {
-        return ParentalConsentID;
-    }
-
-    public String getTitle() {
-        return Title;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public int getDuration() {
-        return Duration;
+    public Movie(int movieID, int formatID, int parentalConsentID, String title, String description, int duration) {
+        this.movieID = movieID;
+        this.formatID = formatID;
+        this.parentalConsentID = parentalConsentID;
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
     }
 
     public int getMovieID() {
-        return MovieID;
+        return movieID;
+    }
+
+    public int getFormatID() {
+        return formatID;
+    }
+
+    public int getParentalConsentID() {
+        return parentalConsentID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 }

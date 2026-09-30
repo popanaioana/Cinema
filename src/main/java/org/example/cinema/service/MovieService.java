@@ -1,22 +1,18 @@
 package org.example.cinema.service;
 
 import org.example.cinema.domain.Movie;
-import org.example.cinema.repository.db.MovieDBRepository;
+import org.example.cinema.repository.interfaces.IMovieRepository;
 import org.example.cinema.validators.MovieValidator;
 
 import java.util.List;
 
 public class MovieService {
-    private MovieDBRepository movieRepository;
-    private MovieValidator movieValidator;
+    private final IMovieRepository movieRepository;
+    private final MovieValidator movieValidator;
 
-    public MovieService(MovieDBRepository movieRepository, MovieValidator movieValidator) {
+    public MovieService(IMovieRepository movieRepository, MovieValidator movieValidator) {
         this.movieRepository = movieRepository;
         this.movieValidator = movieValidator;
-    }
-
-    public MovieService(MovieDBRepository movieDBRepository) {
-        this.movieRepository = movieDBRepository;
     }
 
     public List<Movie> getMovies() {

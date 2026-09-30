@@ -7,7 +7,7 @@ import java.util.List;
 public interface IScreeningRepository {
     List<Screening> getScreenings();
     Screening getScreening(int id);
-    List<Screening> getScreenings(int movieId);
+    List<Screening> getScreenings(int movieID);
     void addScreening(Screening screening);
     void deleteScreening(int id);
     void updateScreening(Screening screening);

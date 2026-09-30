@@ -8,7 +8,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class ScreeningController {
-    private ScreeningService screeningService;
+
+    private final ScreeningService screeningService;
 
     public ScreeningController(ScreeningService screeningService) {
         this.screeningService = screeningService;
@@ -18,29 +19,29 @@ public class ScreeningController {
         return screeningService.getScreenings();
     }
 
-    public Screening handleGetScreening(int id) {
-        return screeningService.getScreening(id);
+    public Screening handleGetScreening(int screeningID) {
+        return screeningService.getScreening(screeningID);
     }
 
-    public List<Screening> handleGetScreenings(int movieId) {
-        return screeningService.getScreenings(movieId);
+    public List<Screening> handleGetScreenings(int movieID) {
+        return screeningService.getScreenings(movieID);
     }
 
-    public void handleAddScreening(int movieId, int cinemaHallId, LocalDate dateScreening, LocalTime timeScreening, int typeId) {
-        Screening screening = new Screening(movieId, cinemaHallId, typeId, dateScreening, timeScreening);
+    public void handleAddScreening(int movieID, int cinemaHallID, LocalDate dateScreening, LocalTime timeScreening, int typeID) {
+        Screening screening = new Screening(movieID, cinemaHallID, typeID, dateScreening, timeScreening);
         screeningService.addScreening(screening);
     }
 
-    public void handleUpdateScreening(int screeningId, int movieId, int cinemaHallId, LocalDate dateScreening, LocalTime timeScreening, int typeId) {
-        Screening screening = new Screening(screeningId, movieId, cinemaHallId, typeId, dateScreening, timeScreening);
+    public void handleUpdateScreening(int screeningID, int movieID, int cinemaHallID, LocalDate dateScreening, LocalTime timeScreening, int typeID) {
+        Screening screening = new Screening(screeningID, movieID, cinemaHallID, typeID, dateScreening, timeScreening);
         screeningService.updateScreening(screening);
     }
 
-    public void handleDeleteScreening(int id) {
-        screeningService.deleteScreening(id);
+    public void handleDeleteScreening(int screeningID) {
+        screeningService.deleteScreening(screeningID);
     }
 
     public int handleGetScreeningIDByDateTime(String dateTime, int movieID) {
-        return screeningService.gerScreeningIDByDateTime(dateTime, movieID);
+        return screeningService.getScreeningIDByDateTime(dateTime, movieID);
     }
 }

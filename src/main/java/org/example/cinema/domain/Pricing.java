@@ -1,23 +1,31 @@
 package org.example.cinema.domain;
 
 public class Pricing {
-    private int PriceID;
-    private int ClientTypeID;
-    private int ScreeningTypeID;
-    private double Price;
+    private int priceID;
+    private int clientTypeID;
+    private int screeningTypeID;
+    private double price;
 
-    public int getPriceID() {
-        return PriceID;
+    public Pricing(int priceID, int clientTypeID, int screeningTypeID, double price) {
+        this.priceID = priceID;
+        this.clientTypeID = clientTypeID;
+        this.screeningTypeID = screeningTypeID;
+        this.price = price;
     }
 
-    public Pricing(int PriceID, int ClientTypeID, int ScreeningTypeID, double Price) {
-        this.PriceID = PriceID;
-        this.ClientTypeID = ClientTypeID;
-        this.ScreeningTypeID = ScreeningTypeID;
-        this.Price = Price;
+    public int getPriceID() {
+        return priceID;
+    }
+
+    public int getClientTypeID() {
+        return clientTypeID;
+    }
+
+    public int getScreeningTypeID() {
+        return screeningTypeID;
     }
 
     public double getPrice() {
-        return Price;
+        return price;
     }
 }

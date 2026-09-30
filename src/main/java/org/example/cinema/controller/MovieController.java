@@ -6,7 +6,7 @@ import org.example.cinema.service.MovieService;
 import java.util.List;
 
 public class MovieController {
-    private MovieService movieService;
+    private final MovieService movieService;
 
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
@@ -16,7 +16,6 @@ public class MovieController {
         return movieService.getMovies();
     }
 
-    //?
     public Movie handleGetMovie(String movieName) {
         return movieService.getMovie(movieName);
     }
@@ -30,13 +29,13 @@ public class MovieController {
         movieService.addMovie(movie);
     }
 
-    public void handleUpdateMovie(int movieId, int formatID, int parentalConsentID, String title, String description, int duration) {
-        Movie movie = new Movie(movieId, formatID, parentalConsentID, title, description, duration);
+    public void handleUpdateMovie(int movieID, int formatID, int parentalConsentID, String title, String description, int duration) {
+        Movie movie = new Movie(movieID, formatID, parentalConsentID, title, description, duration);
         movieService.updateMovie(movie);
     }
 
-    public void handleDeleteMovie(int MovieID) {
-        movieService.deleteMovie(MovieID);
+    public void handleDeleteMovie(int movieID) {
+        movieService.deleteMovie(movieID);
     }
 
     public List<Movie> handleGetMoviesByGenre(int genreID) {

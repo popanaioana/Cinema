@@ -2,20 +2,20 @@ package org.example.cinema.domain;
 
 import java.time.LocalDate;
 
-public class Client extends Users{
-    private int TypeID;
+public class Client extends Users {
+    private int typeID;
 
-    public Client(String FirstName, String LastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String password, int TypeID) {
-        super(FirstName, LastName, email, phoneNumber, dateOfBirth, userName, password);
-        this.TypeID = TypeID;
+    public Client(String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String password, int typeID) {
+        super(firstName, lastName, email, phoneNumber, dateOfBirth, userName, password);
+        this.typeID = typeID;
     }
 
-    public Client(int UserID, String FirstName, String LastName, String Email, String PhoneNumber, LocalDate DateOfBirth, String UserName, String UserPassword, int TypeID) {
-        super(UserID, FirstName, LastName, Email, PhoneNumber, DateOfBirth, UserName, UserPassword);
-        this.TypeID = TypeID;
+    public Client(int userID, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String userName, String userPassword, int typeID) {
+        super(userID, firstName, lastName, email, phoneNumber, dateOfBirth, userName, userPassword);
+        this.typeID = typeID;
     }
 
     public int getTypeID() {
-        return TypeID;
+        return typeID;
     }
 }

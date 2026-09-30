@@ -1,20 +1,16 @@
 package org.example.cinema.service;
 
 import org.example.cinema.domain.Screening;
-import org.example.cinema.repository.db.ScreeningDBRepository;
+import org.example.cinema.repository.interfaces.IScreeningRepository;
 import org.example.cinema.validators.ScreeningValidator;
 
 import java.util.List;
 
 public class ScreeningService {
-    private ScreeningDBRepository screeningRepository;
-    private ScreeningValidator screeningValidator;
+    private final IScreeningRepository screeningRepository;
+    private final ScreeningValidator screeningValidator;
 
-    public ScreeningService(ScreeningDBRepository screeningRepository) {
-        this.screeningRepository = screeningRepository;
-    }
-
-    public ScreeningService(ScreeningDBRepository screeningRepository, ScreeningValidator screeningValidator) {
+    public ScreeningService(IScreeningRepository screeningRepository, ScreeningValidator screeningValidator) {
         this.screeningRepository = screeningRepository;
         this.screeningValidator = screeningValidator;
     }
@@ -27,8 +23,8 @@ public class ScreeningService {
         return screeningRepository.getScreening(id);
     }
 
-    public List<Screening> getScreenings(int movieId) {
-        return screeningRepository.getScreenings(movieId);
+    public List<Screening> getScreenings(int movieID) {
+        return screeningRepository.getScreenings(movieID);
     }
 
     public void addScreening(Screening screening) {
@@ -45,7 +41,7 @@ public class ScreeningService {
         screeningRepository.deleteScreening(id);
     }
 
-    public int gerScreeningIDByDateTime(String dateTime, int movieID) {
+    public int getScreeningIDByDateTime(String dateTime, int movieID) {
         return screeningRepository.getScreeningIDByDateTime(dateTime, movieID);
     }
 }

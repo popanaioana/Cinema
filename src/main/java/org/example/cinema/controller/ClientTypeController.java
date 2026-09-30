@@ -6,7 +6,7 @@ import org.example.cinema.service.ClientTypeService;
 import java.util.List;
 
 public class ClientTypeController {
-    private ClientTypeService clientTypeService;
+    private final ClientTypeService clientTypeService;
 
     public ClientTypeController(ClientTypeService clientTypeService) {
         this.clientTypeService = clientTypeService;
@@ -16,7 +16,7 @@ public class ClientTypeController {
         return clientTypeService.getClientTypes();
     }
 
-    public ClientType handleGetClientTypeById(String typeName) {
+    public ClientType handleGetClientType(String typeName) {
         return clientTypeService.getClientType(typeName);
     }
 }

@@ -1,15 +1,15 @@
 package org.example.cinema.service;
 
 import org.example.cinema.domain.Format;
-import org.example.cinema.repository.db.FormatDBRepository;
+import org.example.cinema.repository.interfaces.IFormatRepository;
 
 import java.util.List;
 
 public class FormatService {
-    private FormatDBRepository formatRepository;
+    private final IFormatRepository formatRepository;
 
-    public FormatService(FormatDBRepository formatDBRepository) {
-        this.formatRepository = formatDBRepository;
+    public FormatService(IFormatRepository formatRepository) {
+        this.formatRepository = formatRepository;
     }
 
     public List<Format> getFormats() {

@@ -6,7 +6,7 @@ import org.example.cinema.service.PricingService;
 import java.util.List;
 
 public class PricingController {
-    private PricingService pricingService;
+    private final PricingService pricingService;
 
     public PricingController(PricingService pricingService) {
         this.pricingService = pricingService;

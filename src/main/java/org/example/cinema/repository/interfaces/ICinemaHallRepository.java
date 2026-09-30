@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ICinemaHallRepository {
     List<CinemaHall> getCinemaHalls();
-    CinemaHall getCinemaHall(int number);
+    CinemaHall getCinemaHall(int cinemaHallID);
 }

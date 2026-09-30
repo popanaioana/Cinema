@@ -6,7 +6,7 @@ import org.example.cinema.service.ScreeningTypeService;
 import java.util.List;
 
 public class ScreeningTypeController {
-    private ScreeningTypeService screeningTypeService;
+    private final ScreeningTypeService screeningTypeService;
 
     public ScreeningTypeController(ScreeningTypeService screeningTypeService) {
         this.screeningTypeService = screeningTypeService;

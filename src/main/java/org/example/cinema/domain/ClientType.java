@@ -1,15 +1,19 @@
 package org.example.cinema.domain;
 
 public class ClientType {
-    private int TypeID;
-    private String TypeName;
+    private int typeID;
+    private String typeName;
 
-    public ClientType(int TypeID, String TypeName) {
-        this.TypeID = TypeID;
-        this.TypeName = TypeName;
+    public ClientType(int typeID, String typeName) {
+        this.typeID = typeID;
+        this.typeName = typeName;
     }
 
     public String getTypeName() {
-        return TypeName;
+        return typeName;
+    }
+
+    public int getTypeID() {
+        return typeID;
     }
 }
